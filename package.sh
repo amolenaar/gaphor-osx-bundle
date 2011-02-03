@@ -1,5 +1,5 @@
 PYVER=2.6
-INSTALLDIR=GaphorX.app/Contents
+INSTALLDIR=Gaphor.app/Contents
 LIBDIR=$INSTALLDIR/lib
 
 mkdir -p $INSTALLDIR
@@ -10,12 +10,15 @@ mkdir -p $INSTALLDIR
 
 #virtualenv --relocatable $INSTALLDIR
 
+# Temp. solution
 SITEPACKAGES=$LIBDIR/python$PYVER/site-packages
 
 mkdir -p $SITEPACKAGES
 
 pygtk=`python -c "import pygtk; print pygtk.__file__[:-1]"`
 oldsite=`dirname $pygtk`
+
+# Copy PyGtk and related libraries
 
 cp $pygtk $SITEPACKAGES
 cp -r $oldsite/cairo $SITEPACKAGES
@@ -57,7 +60,7 @@ for lib in $binlibs; do
   resolve_deps $lib
   fix_paths $lib
 done | sort -u | while read lib; do
-  echo Copying $lib
+  log Copying $lib
   cp $lib $LIBDIR
   chmod u+w $LIBDIR/`basename $lib`
   fix_paths $LIBDIR/`basename $lib`
