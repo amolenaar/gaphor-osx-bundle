@@ -49,7 +49,7 @@ function fix_paths() {
   for dep in `resolve_deps $lib`; do
     #log Fixing `basename $lib`
     log "|  $dep"
-    install_name_tool -change $dep @executable_path/lib/`basename $dep` $lib
+    install_name_tool -change $dep @executable_path/../lib/`basename $dep` $lib
   done
 }
 
