@@ -1,13 +1,14 @@
 #!/bin/sh
 
 MACOS=`dirname $0`
-CONTENTS=`dirname $MacOS`
+CONTENTS=`dirname $MACOS`
+BIN=$CONTENTS/bin
 
 PYTHONPATH=$CONTENTS/lib/python2.6
 PYTHONPATH=$PYTHONPATH:$PYTHONPATH/site-packages
 
 export PYTHONPATH
 
-echo $PATH
+echo PATH: $PATH
 echo ARGS: $*
-$MACOS/gaphor
+$BIN/gaphor

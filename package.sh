@@ -4,9 +4,9 @@ LIBDIR=$INSTALLDIR/lib
 
 mkdir -p $INSTALLDIR
 
-#virtualenv --python=python$PYVER --no-site-packages $INSTALLDIR
+virtualenv --python=python$PYVER --no-site-packages $INSTALLDIR
 
-#$INSTALLDIR/bin/easy_install gaphor
+$INSTALLDIR/bin/easy_install gaphor
 
 #virtualenv --relocatable $INSTALLDIR
 

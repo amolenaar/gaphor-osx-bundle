@@ -36,7 +36,7 @@
 	</array>
   -->
 	<key>CFBundleExecutable</key>
-	<string>start-gaphor.py</string>
+	<string>gaphor</string>
 	<key>CFBundleGetInfoString</key>
 	<string>0.17.0.dev</string>
 	<key>CFBundleIconFile</key>
