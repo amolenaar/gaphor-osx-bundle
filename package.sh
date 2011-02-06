@@ -27,10 +27,11 @@ cp -r $oldsite/gtk-2.0 $SITEPACKAGES
 cp $oldsite/pygtk.pth $SITEPACKAGES
 
 # Copy extra files:
-for dir in etc/pango lib/pango etc/gtk-2.0 lib/gtk-2.0 share/themes; do
+for dir in etc/pango lib/pango etc/gtk-2.0 lib/gtk-2.0 share/themes lib/gdk-pixbuf-2.0; do
   mkdir -p $INSTALLDIR/$dir
   cp -r $LOCALDIR/$dir/* $INSTALLDIR/$dir
 done
+
 
 # Somehow files are writen with mode 444
 find $INSTALLDIR -type f -exec chmod u+w {} \;
@@ -70,3 +71,22 @@ done | sort -u | while read lib; do
   chmod u+w $LIBDIR/`basename $lib`
   fix_paths $LIBDIR/`basename $lib`
 done
+
+function fix_config() {
+  local file=$1
+  local replace=$2
+
+  mv $file $file.orig
+  sed "$replace" $file.orig > $file
+}
+
+# Fix config files
+
+#fix_config $INSTALLDIR/etc/pango/pango.modules 's#/usr/local/.*lib/#${CWD}/../lib/#'
+#fix_config $INSTALLDIR/etc/gtk-2.0/gtk.immodules 's#/usr/local/.*lib/#${CWD}/../lib/#'
+#fix_config $INSTALLDIR/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache 's#/usr/local/.*lib/#${CWD}/../lib/#'
+
+
+fix_config $INSTALLDIR/etc/pango/pango.modules 's#/usr/local/.*lib/#../lib/#'
+fix_config $INSTALLDIR/etc/gtk-2.0/gtk.immodules 's#/usr/local/.*lib/#../lib/#'
+fix_config $INSTALLDIR/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache 's#/usr/local/.*lib/#../lib/#'
