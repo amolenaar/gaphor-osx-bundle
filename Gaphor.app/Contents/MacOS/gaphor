@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+cd "${0%/*}"
 
 MACOS=`dirname $0`
 CONTENTS=`dirname $MACOS`
@@ -11,4 +13,7 @@ export PYTHONPATH
 
 echo PATH: $PATH
 echo ARGS: $*
-$BIN/gaphor
+echo -n env:
+env
+
+$BIN/python $BIN/gaphor
