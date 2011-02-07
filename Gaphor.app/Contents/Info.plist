@@ -62,5 +62,7 @@
 	<string>Copyright 2011 Gaphor Developers, GNU General Public License.</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.6</string>
+        <key>LSUIElement</key>
+        <string>1</string>
 </dict>
 </plist>
