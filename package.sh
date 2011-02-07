@@ -1,3 +1,10 @@
+#!/bin/bash
+#
+# Package script for Gaphor.
+#
+# Thanks: http://stackoverflow.com/questions/1596945/building-osx-app-bundle
+
+
 PYVER=2.6
 INSTALLDIR=Gaphor.app/Contents
 LIBDIR=$INSTALLDIR/lib
@@ -9,13 +16,14 @@ virtualenv --python=python$PYVER --no-site-packages $INSTALLDIR
 $INSTALLDIR/bin/easy_install gaphor
 
 # Make hashbang for python scripts in bin/ relative (#!/usr/bin/env python2.6)
-virtualenv -v --relocatable $INSTALLDIR
+#virtualenv -v --relocatable $INSTALLDIR
 
 # Temp. solution
 SITEPACKAGES=$LIBDIR/python$PYVER/site-packages
 
 mkdir -p $SITEPACKAGES
 
+# This locates pygtk.pyc. We want the source file
 pygtk=`python -c "import pygtk; print pygtk.__file__[:-1]"`
 oldsite=`dirname $pygtk`
 
@@ -26,12 +34,17 @@ cp -r $oldsite/cairo $SITEPACKAGES
 cp -r $oldsite/gtk-2.0 $SITEPACKAGES
 cp $oldsite/pygtk.pth $SITEPACKAGES
 
-# Copy extra files:
+# Modules, config, etc.
 for dir in etc/pango lib/pango etc/gtk-2.0 lib/gtk-2.0 share/themes lib/gdk-pixbuf-2.0; do
   mkdir -p $INSTALLDIR/$dir
   cp -r $LOCALDIR/$dir/* $INSTALLDIR/$dir
 done
 
+# Resources, are processed on startup
+for dir in etc/gtk-2.0 etc/pango lib/gdk-pixbuf-2.0/2.10.0; do
+  mkdir -p $INSTALLDIR/Resources/$dir
+  cp $LOCALDIR/$dir/* $INSTALLDIR/Resources/$dir
+done
 
 # Somehow files are writen with mode 444
 find $INSTALLDIR -type f -exec chmod u+w {} \;
@@ -86,7 +99,7 @@ function fix_config() {
 #fix_config $INSTALLDIR/etc/gtk-2.0/gtk.immodules 's#/usr/local/.*lib/#${CWD}/../lib/#'
 #fix_config $INSTALLDIR/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache 's#/usr/local/.*lib/#${CWD}/../lib/#'
 
-
-fix_config $INSTALLDIR/etc/pango/pango.modules 's#/usr/local/.*lib/#../lib/#'
-fix_config $INSTALLDIR/etc/gtk-2.0/gtk.immodules 's#/usr/local/.*lib/#../lib/#'
-fix_config $INSTALLDIR/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache 's#/usr/local/.*lib/#../lib/#'
+# Normalize paths (Homebrew refers everything from it's Cellar)
+fix_config $INSTALLDIR/Resources/etc/pango/pango.modules 's#/usr/local/.*lib/#/usr/local/lib/#'
+fix_config $INSTALLDIR/Resources/etc/gtk-2.0/gtk.immodules 's#/usr/local/.*lib/#/usr/local/lib/#'
+fix_config $INSTALLDIR/Resources/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache 's#/usr/local/.*lib/#/usr/local/lib/#'

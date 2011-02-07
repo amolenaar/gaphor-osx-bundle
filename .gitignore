@@ -4,3 +4,7 @@ Gaphor.app/Contents/include/
 Gaphor.app/Contents/lib/
 Gaphor.app/Contents/etc/
 Gaphor.app/Contents/share/
+Gaphor.app/Contents/Resources/etc/gtk-2.0/
+Gaphor.app/Contents/Resources/etc/pango/pango.modules
+Gaphor.app/Contents/Resources/etc/pango/pangox.aliases
+Gaphor.app/Contents/Resources/lib/
