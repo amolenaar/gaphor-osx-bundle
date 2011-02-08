@@ -107,7 +107,6 @@ fix_config $INSTALLDIR/Resources/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache 's#/usr
 
 # Package!
 
-VERSION=`$INSTALLDIR/bin/python -c "import pkg_resources; pkg_resources.get_distribution('gaphor').version"`
-
+VERSION=`find . -name 'gaphor*egg' | sed -e 's|.*/gaphor-||' -e 's|-py.*egg$||'`
 zip -r Gaphor-$VERSION-osx-x11.zip $APP
-
+hdiutil create -srcfolder $APP Gaphor-$VERSION-x11.dmg
