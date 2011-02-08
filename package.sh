@@ -4,9 +4,10 @@
 #
 # Thanks: http://stackoverflow.com/questions/1596945/building-osx-app-bundle
 
-
+# Also fix $INSTALLDIR/MacOS/gaphor in case this number changes
 PYVER=2.6
-INSTALLDIR=Gaphor.app/Contents
+APP=Gaphor.app
+INSTALLDIR=$APP/Contents
 LIBDIR=$INSTALLDIR/lib
 
 LOCALDIR=/usr/local
@@ -103,3 +104,10 @@ function fix_config() {
 fix_config $INSTALLDIR/Resources/etc/pango/pango.modules 's#/usr/local/.*lib/#/usr/local/lib/#'
 fix_config $INSTALLDIR/Resources/etc/gtk-2.0/gtk.immodules 's#/usr/local/.*lib/#/usr/local/lib/#'
 fix_config $INSTALLDIR/Resources/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache 's#/usr/local/.*lib/#/usr/local/lib/#'
+
+# Package!
+
+VERSION=`$INSTALLDIR/bin/python -c "import pkg_resources; pkg_resources.get_distribution('gaphor').version"`
+
+zip -r Gaphor-$VERSION-osx-x11.zip $APP
+
